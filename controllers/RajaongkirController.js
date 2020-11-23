@@ -1,38 +1,39 @@
-const axios = require('axios')
-const db = require('../config/database')
 const configResponse = require('../config/response')
+const Cost = require('../models/Cost')
+const RajaOngkirService = require('../services/RajaOngkir')
+const _ = require('lodash')
 
-axios.defaults.baseURL = process.env.RO_URL_DEFAULT
-axios.defaults.headers.common['key'] = process.env.RO_API_KEY
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+exports.cost = (req, res) => {
+    const params = {
+        origin: req.params.origin,
+        destination: req.params.destination,
+        weight: req.params.weight,
+        courier: req.params.courier,
+    }
 
-exports.ongkos = (req, res) => {
-    const param = req.params
-    db.query(`select * from ongkos where asal = ? and tujuan = ? and berat = ? and kurir = ?`,
-        [param.asal, param.tujuan, param.berat, param.kurir],
-        (err, results) => {
-            if (err) throw err
-
-            if (results.length > 0) {
-                configResponse.success(JSON.parse(results[0].results), res)
-            } else {
-                axios.post('/cost', {
-                        origin: param.asal,
-                        destination: param.tujuan,
-                        weight: param.berat,
-                        courier: param.kurir,
-                    })
-                    .then(response => {
-                        const data = response.data
-                        db.query(`insert into ongkos(asal, tujuan, berat, kurir, results) values (?, ?, ?, ?, ?)`,
-                            [param.asal, param.tujuan, param.berat, param.kurir, JSON.stringify(data.rajaongkir.results)],
-                            (err, result) => {
-                                if (err) throw err
-                            })
-                        configResponse.success(data.rajaongkir.results, res)
-                    })
-                    .catch(err => res.send(err))
+    Cost.findAndCountAll({
+        where: params
+    })
+    .then(result => {
+        if (result.count > 0) {
+            configResponse.success(JSON.parse(result.rows[0].results), res)
+        } else {
+            let response_results = async () => {
+                return await RajaOngkirService.getCost(params)
             }
-        })
+
+            response_results()
+                .then(response => {
+                    if (typeof response !== 'undefined') {
+                        // save database
+                        let data = _.assign(params, {results: JSON.stringify(response)})
+                        Cost.build(data).save()
+
+                        configResponse.success(response, res)
+                    }
+                })
+                .catch(error => console.log(error))
+        }
+    })
 
 }

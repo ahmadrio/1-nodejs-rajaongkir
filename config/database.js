@@ -1,15 +1,20 @@
-const mysql = require('mysql')
 require('dotenv').config()
+const Sequalize = require('sequelize')
 
-const connection = mysql.createConnection({
+const connection = new Sequalize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
     host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
+    dialect: 'mysql',
+    logging: false,
+    pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+    }
 })
 
-connection.connect((err) => {
-    if (err) throw err
-})
+connection.authenticate()
+    .then(() => console.log('Database connected...'))
+    .catch(err => console.log('Error: ' + err))
 
 module.exports = connection

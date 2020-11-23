@@ -5,6 +5,6 @@ const { response } = require('express')
 
 const RajaongkirController = require('../controllers/RajaongkirController')
 
-router.get('/ongkos/:asal/:tujuan/:berat/:kurir', RajaongkirController.ongkos)
+router.get('/cost/:origin/:destination/:weight/:courier', RajaongkirController.cost)
 
 module.exports = router
