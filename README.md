@@ -32,3 +32,40 @@ POST => http://127.0.0.1:4000/api/cost
     "courier": "jne"
 }
 ```
+- Example response
+```
+{
+    "status": 200,
+    "message": "Success",
+    "data": [
+        {
+            "code": "jne",
+            "name": "Jalur Nugraha Ekakurir (JNE)",
+            "costs": [
+                {
+                    "service": "OKE",
+                    "description": "Ongkos Kirim Ekonomis",
+                    "cost": [
+                        {
+                            "value": 26000,
+                            "etd": "3-6",
+                            "note": ""
+                        }
+                    ]
+                },
+                {
+                    "service": "REG",
+                    "description": "Layanan Reguler",
+                    "cost": [
+                        {
+                            "value": 30000,
+                            "etd": "2-3",
+                            "note": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
