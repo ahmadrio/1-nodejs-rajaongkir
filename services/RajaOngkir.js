@@ -10,7 +10,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             axios.post('/cost', params)
             .then(response => {
-                resolve(response.data.rajaongkir.results)
+                resolve(response.data.rajaongkir)
             })
             .catch(err => reject(err))
         })
