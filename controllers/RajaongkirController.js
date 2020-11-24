@@ -28,7 +28,7 @@ exports.cost = (req, res) => {
         const newResults = []
 
         if (result.count > 0) {
-            for await (const item of result.rows) {
+            for (const item of result.rows) {
                 newResults.push(JSON.parse(item.results))
             }
 
@@ -46,7 +46,7 @@ exports.cost = (req, res) => {
 
             Promise.all(newResults)
                 .then(response => {
-                    let responseFilter = _.flatten(_.filter(response))
+                    let responseFilter = _.flatten(response)
                     _.forEach(responseFilter, (items, index) => {
                         const data = _.assign(items.query, {
                             results: JSON.stringify(items.results)

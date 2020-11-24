@@ -1,7 +1,34 @@
-# Test API NodeJS + RajaOngkir
+# Learn Simple API NodeJS + RajaOngkir
 
 - Run `npm i --save`
-- Copy `.env.example` to `.env` & Setting database
-- Run App `> npm run dev` or `> npm run start`
+- Copy `.env.example` to `.env` & Setting your environment
+```
+RO_URL_DEFAULT=
+RO_API_KEY=
+
+DB_HOST=127.0.0.1
+DB_NAME=nodejs_rajaongkir
+DB_USER=
+DB_PASS=
+```
+- Runing App
+```
+npm run dev
+
+// or
+
+npm run start
+```
 - Testing URL API
-`http://127.0.0.1:4000/api/ongkos/501/114/1700/jne`
+```
+POST => http://127.0.0.1:4000/api/cost
+```
+- Add body raw json
+```
+{
+    "origin": 105,
+    "destination": [113, 114],
+    "weight": 1500,
+    "courier": "jne"
+}
+```
