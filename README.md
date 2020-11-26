@@ -1,4 +1,4 @@
-# Learn Simple API NodeJS + RajaOngkir
+# Learn Simple API NodeJS + RajaOngkir + RabbitMQ
 
 - Run `npm i --save`
 - Copy `.env.example` to `.env` & Setting your environment
@@ -12,11 +12,7 @@ DB_USER=
 DB_PASS=
 ```
 - Runing App
-```
-npm run dev
-
-// or
-
+```cmd
 npm run start
 ```
 - Testing URL API
@@ -24,7 +20,7 @@ npm run start
 POST => http://127.0.0.1:4000/api/cost
 ```
 - Add body raw json
-```
+```json
 {
     "origin": 105,
     "destination": [113, 114],
@@ -33,34 +29,122 @@ POST => http://127.0.0.1:4000/api/cost
 }
 ```
 - Example response
-```
+```json
 {
     "status": 200,
     "message": "Success",
     "data": [
         {
-            "code": "jne",
-            "name": "Jalur Nugraha Ekakurir (JNE)",
-            "costs": [
+            "query": {
+                "origin": 105,
+                "destination": 113,
+                "weight": 1500,
+                "courier": "jne"
+            },
+            "status": {
+                "code": 200,
+                "description": "OK"
+            },
+            "origin_details": {
+                "city_id": "105",
+                "province_id": "10",
+                "province": "Jawa Tengah",
+                "type": "Kabupaten",
+                "city_name": "Cilacap",
+                "postal_code": "53211"
+            },
+            "destination_details": {
+                "city_id": "113",
+                "province_id": "10",
+                "province": "Jawa Tengah",
+                "type": "Kabupaten",
+                "city_name": "Demak",
+                "postal_code": "59519"
+            },
+            "results": [
                 {
-                    "service": "OKE",
-                    "description": "Ongkos Kirim Ekonomis",
-                    "cost": [
+                    "code": "jne",
+                    "name": "Jalur Nugraha Ekakurir (JNE)",
+                    "costs": [
                         {
-                            "value": 26000,
-                            "etd": "3-6",
-                            "note": ""
+                            "service": "OKE",
+                            "description": "Ongkos Kirim Ekonomis",
+                            "cost": [
+                                {
+                                    "value": 26000,
+                                    "etd": "3-6",
+                                    "note": ""
+                                }
+                            ]
+                        },
+                        {
+                            "service": "REG",
+                            "description": "Layanan Reguler",
+                            "cost": [
+                                {
+                                    "value": 30000,
+                                    "etd": "2-3",
+                                    "note": ""
+                                }
+                            ]
                         }
                     ]
-                },
+                }
+            ]
+        },
+        {
+            "query": {
+                "origin": 105,
+                "destination": 114,
+                "weight": 1500,
+                "courier": "jne"
+            },
+            "status": {
+                "code": 200,
+                "description": "OK"
+            },
+            "origin_details": {
+                "city_id": "105",
+                "province_id": "10",
+                "province": "Jawa Tengah",
+                "type": "Kabupaten",
+                "city_name": "Cilacap",
+                "postal_code": "53211"
+            },
+            "destination_details": {
+                "city_id": "114",
+                "province_id": "1",
+                "province": "Bali",
+                "type": "Kota",
+                "city_name": "Denpasar",
+                "postal_code": "80227"
+            },
+            "results": [
                 {
-                    "service": "REG",
-                    "description": "Layanan Reguler",
-                    "cost": [
+                    "code": "jne",
+                    "name": "Jalur Nugraha Ekakurir (JNE)",
+                    "costs": [
                         {
-                            "value": 30000,
-                            "etd": "2-3",
-                            "note": ""
+                            "service": "OKE",
+                            "description": "Ongkos Kirim Ekonomis",
+                            "cost": [
+                                {
+                                    "value": 64000,
+                                    "etd": "2-3",
+                                    "note": ""
+                                }
+                            ]
+                        },
+                        {
+                            "service": "REG",
+                            "description": "Layanan Reguler",
+                            "cost": [
+                                {
+                                    "value": 70000,
+                                    "etd": "1-2",
+                                    "note": ""
+                                }
+                            ]
                         }
                     ]
                 }
@@ -69,3 +153,7 @@ POST => http://127.0.0.1:4000/api/cost
     ]
 }
 ```
+
+- RabbitMQ Page
+
+[](https://github.com/opanegro/rajaongkir/rabbitmq-ss.jpeg)
